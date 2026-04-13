@@ -454,6 +454,12 @@ Examples:
 
 You will go deeper on this in your model card.
 
+- With only 19 songs and one per genre, a genre match is essentially an automatic #1 — there's no real competition within a genre bucket
+- Mood matching is binary (exact match or zero), so "chill" and "relaxed" are treated as completely unrelated even though they feel nearly identical
+- The system has no fallback warning when a genre doesn't exist in the catalog — it silently returns lower-quality results and the user has no idea why
+- Energy and acousticness can approximate "vibe," but they can't tell the difference between a quiet piano piece and a quiet electronic ambient track
+- There is no diversity mechanism — the top 5 results can all be from the same energy band or the same artist if the catalog has clustering
+
 ---
 
 ## Reflection
@@ -466,6 +472,10 @@ Write 1 to 2 paragraphs here about what you learned:
 
 - about how recommenders turn data into predictions
 - about where bias or unfairness could show up in systems like this
+
+Building this system made it clear that a recommender doesn't actually "understand" music — it just measures distances between numbers. When Gym Hero ranked #1 for a workout profile with a score of 4.42/4.50, it felt almost intelligent. But that feeling came entirely from picking the right features to measure (energy, mood, genre), not from any real understanding of what makes music satisfying. The algorithm is just arithmetic. What makes it feel like a recommendation is whether the features we chose are actually good proxies for what the user cares about.
+
+The bias question was harder than I expected. The adversarial test with "High Energy + Sad Mood" showed that unfairness doesn't always look broken — the output score was 3.58, which looks perfectly reasonable. The system confidently recommended a slow, quiet soul ballad to someone asking for high-energy music, and nothing in the output flagged it as wrong. In real systems like Spotify or YouTube, this kind of bias is even harder to see because the catalog is millions of songs and you can't easily trace why something appeared. The lesson is that you can't just look at whether results seem valid on the surface — you have to deliberately test the cases where preferences conflict or data is missing, because that's where the real problems hide.
 
 
 ---
