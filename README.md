@@ -165,39 +165,209 @@ You can add more tests in `tests/test_recommender.py`.
 
 ## Sample Output
 
-Running `python3 src/main.py` with the default indie pop / moody profile:
+Running `python3 src/main.py` evaluates six profiles: three standard and three adversarial edge cases.
+
+### Profile 1 — High-Energy Pop
 
 ```
-Loaded songs: 19
-
-User profile: genre='indie pop', mood='moody', energy=0.72, acoustic=False
-
+Profile: High-Energy Pop
+  genre='pop', mood='intense', energy=0.92, acoustic=False
 ====================================================
   Top 5 Recommendations
 ====================================================
 
-  #1  Rooftop Lights — Indigo Parade
-       Score : 3.38 / 4.50
-       Why   : genre match (+2.0), energy proximity (+0.96), acousticness proximity (+0.43)
+  #1  Gym Hero — Max Pulse
+       Score : 4.42 / 4.50
+       Why   : genre match (+2.0), mood match (+1.0), energy proximity (+0.99), acousticness proximity (+0.42)
 
-  #2  Night Drive Loop — Neon Echo
-       Score : 2.46 / 4.50
-       Why   : mood match (+1.0), energy proximity (+0.97), acousticness proximity (+0.49)
+  #2  Sunrise City — Neon Echo
+       Score : 3.39 / 4.50
+       Why   : genre match (+2.0), energy proximity (+0.90), acousticness proximity (+0.49)
 
-  #3  Neon Bloom — Frequency Ghost
+  #3  Storm Runner — Voltline
        Score : 2.44 / 4.50
        Why   : mood match (+1.0), energy proximity (+0.99), acousticness proximity (+0.45)
 
-  #4  Block by Block — Gravel Kings
-       Score : 1.44 / 4.50
-       Why   : energy proximity (+0.97), acousticness proximity (+0.47)
+  #4  Pulse Signal — Axon Drive
+       Score : 2.38 / 4.50
+       Why   : mood match (+1.0), energy proximity (+0.96), acousticness proximity (+0.41)
 
-  #5  Sunrise City — Neon Echo
-       Score : 1.39 / 4.50
-       Why   : energy proximity (+0.90), acousticness proximity (+0.49)
+  #5  Broken Glass — Iron Veil
+       Score : 1.38 / 4.50
+       Why   : energy proximity (+0.95), acousticness proximity (+0.43)
 ```
 
-**Why these results make sense:** Rooftop Lights is the only `indie pop` song in the catalog, so it wins by +2.0 genre points. Night Drive Loop and Neon Bloom tie on mood (`moody`, +1.0) and nearly identical energy proximity, placing them 2nd and 3rd.
+**Observation:** Gym Hero scores near-perfect (4.42/4.50) — genre + mood + energy all align. Sunrise City gets #2 purely on genre (+2.0) despite not being intense.
+
+---
+
+### Profile 2 — Chill Lofi
+
+```
+Profile: Chill Lofi
+  genre='lofi', mood='chill', energy=0.38, acoustic=True
+====================================================
+  Top 5 Recommendations
+====================================================
+
+  #1  Library Rain — Paper Lanterns
+       Score : 4.44 / 4.50
+       Why   : genre match (+2.0), mood match (+1.0), energy proximity (+0.97), acousticness proximity (+0.47)
+
+  #2  Midnight Coding — LoRoom
+       Score : 4.42 / 4.50
+       Why   : genre match (+2.0), mood match (+1.0), energy proximity (+0.96), acousticness proximity (+0.45)
+
+  #3  Focus Flow — LoRoom
+       Score : 3.47 / 4.50
+       Why   : genre match (+2.0), energy proximity (+0.98), acousticness proximity (+0.49)
+
+  #4  Spacewalk Thoughts — Orbit Bloom
+       Score : 2.34 / 4.50
+       Why   : mood match (+1.0), energy proximity (+0.90), acousticness proximity (+0.44)
+
+  #5  Coffee Shop Stories — Slow Stereo
+       Score : 1.45 / 4.50
+       Why   : energy proximity (+0.99), acousticness proximity (+0.46)
+```
+
+**Observation:** The lofi genre has 3 songs — all land in the top 3. The catalog's density per genre directly shapes the results.
+
+---
+
+### Profile 3 — Deep Intense Rock
+
+```
+Profile: Deep Intense Rock
+  genre='rock', mood='intense', energy=0.9, acoustic=False
+====================================================
+  Top 5 Recommendations
+====================================================
+
+  #1  Storm Runner — Voltline
+       Score : 4.44 / 4.50
+       Why   : genre match (+2.0), mood match (+1.0), energy proximity (+0.99), acousticness proximity (+0.45)
+
+  #2  Pulse Signal — Axon Drive
+       Score : 2.40 / 4.50
+       Why   : mood match (+1.0), energy proximity (+0.98), acousticness proximity (+0.41)
+
+  #3  Gym Hero — Max Pulse
+       Score : 2.40 / 4.50
+       Why   : mood match (+1.0), energy proximity (+0.97), acousticness proximity (+0.42)
+
+  #4  Sunrise City — Neon Echo
+       Score : 1.41 / 4.50
+       Why   : energy proximity (+0.92), acousticness proximity (+0.49)
+
+  #5  Broken Glass — Iron Veil
+       Score : 1.36 / 4.50
+       Why   : energy proximity (+0.93), acousticness proximity (+0.43)
+```
+
+**Observation:** Only one rock song exists so #1 is obvious. A 1.9-point gap between #1 and #2 confirms genre dominance.
+
+---
+
+### EDGE 1 — High Energy + Sad Mood (conflicting preferences)
+
+```
+Profile: EDGE: High Energy + Sad Mood
+  genre='soul', mood='sad', energy=0.9, acoustic=False
+====================================================
+  Top 5 Recommendations
+====================================================
+
+  #1  Blue Porch — Mae Della
+       Score : 3.58 / 4.50
+       Why   : genre match (+2.0), mood match (+1.0), energy proximity (+0.39), acousticness proximity (+0.19)
+
+  #2  Storm Runner — Voltline
+       Score : 1.44 / 4.50
+       Why   : energy proximity (+0.99), acousticness proximity (+0.45)
+
+  #3  Sunrise City — Neon Echo
+       Score : 1.41 / 4.50
+       Why   : energy proximity (+0.92), acousticness proximity (+0.49)
+
+  #4  Pulse Signal — Axon Drive
+       Score : 1.40 / 4.50
+       Why   : energy proximity (+0.98), acousticness proximity (+0.41)
+
+  #5  Gym Hero — Max Pulse
+       Score : 1.40 / 4.50
+       Why   : energy proximity (+0.97), acousticness proximity (+0.42)
+```
+
+**Observation — adversarial finding:** Blue Porch wins despite having energy=0.29 (far from target 0.9) because genre+mood (+3.0) overwhelms energy loss (−0.61). The system gets "tricked" — it recommends a sleepy soul track to someone who wants high-energy sad music.
+
+---
+
+### EDGE 2 — Unknown Genre (no genre points ever fire)
+
+```
+Profile: EDGE: Unknown Genre
+  genre='bossa nova', mood='relaxed', energy=0.4, acoustic=True
+====================================================
+  Top 5 Recommendations
+====================================================
+
+  #1  Dust Road Home — Colt Farrow
+       Score : 2.44 / 4.50
+       Why   : mood match (+1.0), energy proximity (+0.96), acousticness proximity (+0.48)
+
+  #2  Coffee Shop Stories — Slow Stereo
+       Score : 2.42 / 4.50
+       Why   : mood match (+1.0), energy proximity (+0.97), acousticness proximity (+0.46)
+
+  #3  Focus Flow — LoRoom
+       Score : 1.49 / 4.50
+       Why   : energy proximity (+1.00), acousticness proximity (+0.49)
+
+  #4  Midnight Coding — LoRoom
+       Score : 1.44 / 4.50
+       Why   : energy proximity (+0.98), acousticness proximity (+0.45)
+
+  #5  Library Rain — Paper Lanterns
+       Score : 1.42 / 4.50
+       Why   : energy proximity (+0.95), acousticness proximity (+0.47)
+```
+
+**Observation — adversarial finding:** With no genre match possible, the max achievable score drops from 4.50 to 2.50. Mood and energy become the only discriminators. The system degrades gracefully but the score ceiling reveals the genre gap clearly.
+
+---
+
+### EDGE 3 — Max Acoustic + Perfect Energy Match
+
+```
+Profile: EDGE: Max Acoustic Preference
+  genre='classical', mood='melancholic', energy=0.21, acoustic=True
+====================================================
+  Top 5 Recommendations
+====================================================
+
+  #1  Rainy Sunday — Clara Voss
+       Score : 4.42 / 4.50
+       Why   : genre match (+2.0), mood match (+1.0), energy proximity (+1.00), acousticness proximity (+0.42)
+
+  #2  Blue Porch — Mae Della
+       Score : 1.41 / 4.50
+       Why   : energy proximity (+0.92), acousticness proximity (+0.49)
+
+  #3  Spacewalk Thoughts — Orbit Bloom
+       Score : 1.37 / 4.50
+       Why   : energy proximity (+0.93), acousticness proximity (+0.44)
+
+  #4  Library Rain — Paper Lanterns
+       Score : 1.33 / 4.50
+       Why   : energy proximity (+0.86), acousticness proximity (+0.47)
+
+  #5  Campfire Ghosts — The Hollow Pine
+       Score : 1.32 / 4.50
+       Why   : energy proximity (+0.88), acousticness proximity (+0.45)
+```
+
+**Observation:** Rainy Sunday scores 4.42 with a perfect energy proximity of +1.00 (energy=0.21, target=0.21). The 2.9-pt gap between #1 and #2 is the largest in any profile — one song dominates completely when all four signals align.
 
 ---
 
