@@ -163,6 +163,44 @@ You can add more tests in `tests/test_recommender.py`.
 
 ---
 
+## Sample Output
+
+Running `python3 src/main.py` with the default indie pop / moody profile:
+
+```
+Loaded songs: 19
+
+User profile: genre='indie pop', mood='moody', energy=0.72, acoustic=False
+
+====================================================
+  Top 5 Recommendations
+====================================================
+
+  #1  Rooftop Lights — Indigo Parade
+       Score : 3.38 / 4.50
+       Why   : genre match (+2.0), energy proximity (+0.96), acousticness proximity (+0.43)
+
+  #2  Night Drive Loop — Neon Echo
+       Score : 2.46 / 4.50
+       Why   : mood match (+1.0), energy proximity (+0.97), acousticness proximity (+0.49)
+
+  #3  Neon Bloom — Frequency Ghost
+       Score : 2.44 / 4.50
+       Why   : mood match (+1.0), energy proximity (+0.99), acousticness proximity (+0.45)
+
+  #4  Block by Block — Gravel Kings
+       Score : 1.44 / 4.50
+       Why   : energy proximity (+0.97), acousticness proximity (+0.47)
+
+  #5  Sunrise City — Neon Echo
+       Score : 1.39 / 4.50
+       Why   : energy proximity (+0.90), acousticness proximity (+0.49)
+```
+
+**Why these results make sense:** Rooftop Lights is the only `indie pop` song in the catalog, so it wins by +2.0 genre points. Night Drive Loop and Neon Bloom tie on mood (`moody`, +1.0) and nearly identical energy proximity, placing them 2nd and 3rd.
+
+---
+
 ## Experiments You Tried
 
 Use this section to document the experiments you ran. For example:

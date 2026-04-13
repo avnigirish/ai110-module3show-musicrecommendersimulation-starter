@@ -13,7 +13,8 @@ from recommender import load_songs, recommend_songs
 
 
 def main() -> None:
-    songs = load_songs("data/songs.csv") 
+    songs = load_songs("data/songs.csv")
+    print(f"Loaded songs: {len(songs)}\n")
 
     # Taste profile: a focused late-night indie listener
     # - Prefers indie pop with a moody emotional tone
@@ -29,14 +30,16 @@ def main() -> None:
 
     recommendations = recommend_songs(user_prefs, songs, k=5)
 
-    print("\nTop recommendations:\n")
-    for rec in recommendations:
-        # You decide the structure of each returned item.
-        # A common pattern is: (song, score, explanation)
-        song, score, explanation = rec
-        print(f"{song['title']} - Score: {score:.2f}")
-        print(f"Because: {explanation}")
-        print()
+    print(f"User profile: genre={user_prefs['genre']!r}, mood={user_prefs['mood']!r}, "
+          f"energy={user_prefs['target_energy']}, acoustic={user_prefs['likes_acoustic']}")
+    print()
+    print("=" * 52)
+    print(f"  Top {len(recommendations)} Recommendations")
+    print("=" * 52)
+    for i, (song, score, explanation) in enumerate(recommendations, 1):
+        print(f"\n  #{i}  {song['title']} — {song['artist']}")
+        print(f"       Score : {score:.2f} / 4.50")
+        print(f"       Why   : {explanation}")
 
 
 if __name__ == "__main__":
